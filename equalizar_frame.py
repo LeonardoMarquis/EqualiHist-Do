@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 from processamento import calcular_histograma, equalizar
-from componentes import (COR_AZUL, COR_FUNDO, PASTA_OUTPUT, abrir_imagem_cinza,
+from componentes import (COR_DETALHE, COR_DETALHE2, COR_FUNDO, PASTA_OUTPUT, abrir_imagem_cinza,
                          criar_botao, criar_figura_histograma, limpar_figura,
                          mostrar_figura, mostrar_imagem)
 
@@ -54,7 +54,7 @@ class FrameEqualizar(tk.Frame):
         sidebar.pack(side="left", fill="y")
 
         tk.Label(sidebar, text="Passos", font=("Arial", 13, "bold"),
-                 bg="#F5F5F5", fg=COR_AZUL).pack(pady=10)
+                 bg="#F5F5F5", fg=COR_DETALHE).pack(pady=10)
 
         self.hist_btn = criar_botao(sidebar, "Gerar histograma", self.generate_histogram,
                                     estado="disabled", width=18)
@@ -71,12 +71,12 @@ class FrameEqualizar(tk.Frame):
         panel_img = tk.Frame(image_frame, bg=COR_FUNDO)
         panel_img.pack(side="left", expand=True, fill="both")
 
-        self.lbl_titulo = tk.Label(panel_img, text="", bg=COR_FUNDO, fg=COR_AZUL,
+        self.lbl_titulo = tk.Label(panel_img, text="", bg=COR_FUNDO, fg=COR_DETALHE2,
                                    font=("Arial", 12, "bold"))
         self.lbl_titulo.pack(pady=5)
 
         self.lbl_imagem = tk.Label(panel_img, text="Nenhuma imagem carregada",
-                                   bg=COR_FUNDO, fg=COR_AZUL, font=("Arial", 14))
+                                   bg=COR_FUNDO, fg=COR_DETALHE2, font=("Arial", 14))
         self.lbl_imagem.pack(expand=True)
 
         self.panel_hist = tk.Frame(image_frame, bg=COR_FUNDO)
@@ -85,8 +85,13 @@ class FrameEqualizar(tk.Frame):
 
     def clear_histogram_area(self):
         limpar_figura(self.panel_hist)
+
+        # gerar espaco, linha cima do histograma para ficar 1 linha abaixo e alinhar com o titulo da imagem original
+        tk.Label(self.panel_hist, text="", bg=COR_FUNDO,
+                font=("Arial", 12, "bold")).pack(pady=5)
+        # texto normal "verdadeiro"
         tk.Label(self.panel_hist, text="O histograma aparece aqui", bg=COR_FUNDO,
-                 fg=COR_AZUL, font=("Arial", 12)).pack(expand=True)
+                fg=COR_DETALHE2, font=("Arial", 14)).pack(expand=True)
 
     # ---------- ações ----------
     def local_search(self):

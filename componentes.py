@@ -6,18 +6,51 @@ from PIL import Image, ImageTk
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-COR_FUNDO = "#EAF2FF"
-COR_AZUL = "#1E90FF"
+COR_FUNDO = "#E7EBF1"
+COR_DETALHE = "#009797"
+COR_DETALHE2 = "#000000"
+
 PASTA_OUTPUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
 
 
+
+# alterando a classe botao
+
+class Botao(tk.Button):
+    def __init__(self, parent, texto, comando, estado="normal", amarelo=False, width=None):
+        if amarelo:
+            self._normal = ("#FFF3B0", "#1F1E1E")      # (fundo, texto)
+            self._ativo = "#E6D98A"                    # fundo ao clicar
+            self._desab = ("#A89B4A", "#2B2B2B")       # desabilitado: mais escuro
+        else:
+            self._normal = (COR_DETALHE, "white")
+            self._ativo = "#007A7A"
+            self._desab = ("#005252", "#BDBDBD")
+
+        opcoes = dict(text=texto, command=comando, relief="flat")
+        if width:
+            opcoes["width"] = width
+        super().__init__(parent, **opcoes)
+        self._aplicar_estado(estado)
+
+    def _aplicar_estado(self, estado):
+        bg, fg = self._desab if estado == "disabled" else self._normal
+        tk.Button.configure(self, state=estado, bg=bg, fg=fg,
+                            disabledforeground=fg, activebackground=self._ativo)
+
+    def configure(self, cnf=None, **kw):
+        estado = kw.pop("state", None)
+        resultado = super().configure(cnf, **kw)
+        if estado is not None:
+            self._aplicar_estado(estado)
+        return resultado
+
+    config = configure      # sem isso o .config(state=) nao iria mudar a cor do botao
+
+
+
 def criar_botao(parent, texto, comando, estado="normal", amarelo=False, width=None):
-    bg, fg, ativo = ("#FFF3B0", "#333333", "#E6D98A") if amarelo else (COR_AZUL, "white", "#1873CC")
-    opcoes = dict(text=texto, command=comando, state=estado, bg=bg, fg=fg,
-                  activebackground=ativo, relief="flat")
-    if width:
-        opcoes["width"] = width
-    return tk.Button(parent, **opcoes)
+    return Botao(parent, texto, comando, estado, amarelo, width)
 
 
 def abrir_imagem_cinza():
@@ -50,7 +83,7 @@ def limpar_imagem(label, texto):
 def criar_figura_histograma(hist, titulo, largura=4.2, altura=3.4):
     fig = Figure(figsize=(largura, altura), dpi=100)
     ax = fig.add_subplot(111)
-    ax.bar(range(256), hist, width=1.0, color=COR_AZUL)
+    ax.bar(range(256), hist, width=1.0, color=COR_DETALHE)
     ax.set_title(titulo)
     ax.set_xlabel("Intensidade (0-255)")
     ax.set_ylabel("Nº de pixels")

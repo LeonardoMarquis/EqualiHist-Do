@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from componentes import (COR_AZUL, COR_FUNDO, criar_botao, criar_figura_histograma,
+from componentes import (COR_DETALHE, COR_DETALHE2, COR_FUNDO, criar_botao, criar_figura_histograma,
                          mostrar_figura, mostrar_imagem)
 
 TAM_IMAGEM = (460, 300)
@@ -30,7 +30,7 @@ class FrameComparar(tk.Frame):
             coluna = tk.Frame(grade, bg=COR_FUNDO)
             coluna.grid(row=0, column=col, sticky="nsew")
 
-            tk.Label(coluna, text=titulo_img, bg=COR_FUNDO, fg=COR_AZUL,
+            tk.Label(coluna, text=titulo_img, bg=COR_FUNDO, fg=COR_DETALHE2,
                      font=("Arial", 12, "bold")).pack(pady=5)
 
             lbl = tk.Label(coluna, bg=COR_FUNDO)

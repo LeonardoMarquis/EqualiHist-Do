@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 from processamento import calcular_histograma, especificar_histograma
-from componentes import (COR_AZUL, COR_FUNDO, PASTA_OUTPUT, abrir_imagem_cinza, criar_botao,
+from componentes import (COR_DETALHE, COR_DETALHE2, COR_FUNDO, PASTA_OUTPUT, abrir_imagem_cinza, criar_botao,
                          criar_figura_histograma, limpar_figura, limpar_imagem,
                          mostrar_figura, mostrar_imagem)
 
@@ -52,10 +52,10 @@ class FrameEspecificacao(tk.Frame):
         for col, titulo in enumerate(titulos):
             grade.columnconfigure(col, weight=1)
 
-            tk.Label(grade, text=titulo, bg=COR_FUNDO, fg=COR_AZUL,
+            tk.Label(grade, text=titulo, bg=COR_FUNDO, fg=COR_DETALHE2,
                      font=("Arial", 12, "bold")).grid(row=0, column=col, pady=(5, 0))
 
-            lbl = tk.Label(grade, text="Nenhuma imagem", bg=COR_FUNDO, fg=COR_AZUL)
+            lbl = tk.Label(grade, text="Nenhuma imagem", bg=COR_FUNDO, fg=COR_DETALHE2)
             lbl.grid(row=1, column=col)
             self.lbl_imgs.append(lbl)
 
@@ -119,16 +119,16 @@ class FrameEspecificacao(tk.Frame):
         os.makedirs(PASTA_OUTPUT, exist_ok=True)
         base = os.path.splitext(os.path.basename(self.original_path))[0]
 
-        self.original_image.save(os.path.join(PASTA_OUTPUT, f"{base}_original.png"))
-        self.referencia_image.save(os.path.join(PASTA_OUTPUT, f"{base}_referencia.png"))
-        self.equalized_image.save(os.path.join(PASTA_OUTPUT, f"{base}_equalizada.png"))
+        self.original_image.save(os.path.join(PASTA_OUTPUT, f"{base}_original_eq_es.png"))
+        self.referencia_image.save(os.path.join(PASTA_OUTPUT, f"{base}_referencia_eq_es.png"))
+        self.equalized_image.save(os.path.join(PASTA_OUTPUT, f"{base}_equalizada_eq_es.png"))
 
 
         criar_figura_histograma(self.hist_original, "Histograma original").savefig(
-            os.path.join(PASTA_OUTPUT, f"{base}_histograma_original.png"))
+            os.path.join(PASTA_OUTPUT, f"{base}_histograma_original_eq_es.png"))
         criar_figura_histograma(self.hist_referencia, "Histograma da referência").savefig(
-            os.path.join(PASTA_OUTPUT, f"{base}_histograma_referencia.png"))
+            os.path.join(PASTA_OUTPUT, f"{base}_histograma_referencia_eq_es.png"))
         criar_figura_histograma(self.hist_equalized, "Histograma equalizado").savefig(
-            os.path.join(PASTA_OUTPUT, f"{base}_histograma_equalizado.png"))
+            os.path.join(PASTA_OUTPUT, f"{base}_histograma_equalizado_eq_es.png"))
 
-        messagebox.showinfo("Salvo", f"4 arquivos salvos em:\n{PASTA_OUTPUT}")
+        messagebox.showinfo("Salvo", f"6 arquivos salvos em:\n{PASTA_OUTPUT}")
