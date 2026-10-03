@@ -38,8 +38,7 @@ class FrameEqualizar(tk.Frame):
         bottom_frame = tk.Frame(self, bg=COR_FUNDO, pady=10)
         bottom_frame.pack(side="bottom", fill="x")
 
-        self.next_btn = criar_botao(bottom_frame, "Próximo (Passo 3)", self.app.mostrar_especificacao,
-                                    estado="disabled")
+        self.next_btn = criar_botao(bottom_frame, "Equalização Específica", self.app.mostrar_especificacao)
         self.next_btn.pack(side="right", padx=10)
 
         self.compare_btn = criar_botao(bottom_frame, "Comparar", self.comparar,
@@ -109,7 +108,7 @@ class FrameEqualizar(tk.Frame):
         self.equalize_btn.config(state="disabled")
         self.save_btn.config(state="disabled")
         self.compare_btn.config(state="disabled")
-        self.next_btn.config(state="disabled")
+
 
     def generate_histogram(self):
         self.hist_original = calcular_histograma(self.original_image)
@@ -131,7 +130,7 @@ class FrameEqualizar(tk.Frame):
         self.equalize_btn.config(state="disabled")
         self.save_btn.config(state="normal")
         self.compare_btn.config(state="normal")
-        self.next_btn.config(state="normal")
+
 
     def comparar(self):
         self.app.mostrar_comparar(self.original_image, self.equalized_image,

@@ -3,6 +3,8 @@ __pycache__/
 build/
 venv/
 env/
+output/
+
 *.pyc
 *.pyo
 *.pyd

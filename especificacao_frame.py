@@ -1,7 +1,9 @@
+import os
 import tkinter as tk
+from tkinter import messagebox
 
 from processamento import calcular_histograma, especificar_histograma
-from componentes import (COR_AZUL, COR_FUNDO, abrir_imagem_cinza, criar_botao,
+from componentes import (COR_AZUL, COR_FUNDO, PASTA_OUTPUT, abrir_imagem_cinza, criar_botao,
                          criar_figura_histograma, limpar_figura, limpar_imagem,
                          mostrar_figura, mostrar_imagem)
 
@@ -11,8 +13,8 @@ TAM_IMAGEM = (320, 260)
 class FrameEspecificacao(tk.Frame):
     def __init__(self, master, app):
         super().__init__(master, bg="#FFFFFF")
-        self.img_original = None
-        self.img_referencia = None
+        self.original_image = None
+        self.referencia_image = None
 
         # ===== BARRA DE CIMA =====
         top_frame = tk.Frame(self, bg=COR_FUNDO, pady=10)
@@ -21,14 +23,21 @@ class FrameEspecificacao(tk.Frame):
         criar_botao(top_frame, "Abrir imagem original", self.abrir_original).pack(side="left", padx=10)
         criar_botao(top_frame, "Abrir imagem de referência", self.abrir_referencia).pack(side="left", padx=10)
 
-        self.btn_especificar = criar_botao(top_frame, "Equalização específica", self.especificar,
-                                           estado="disabled", amarelo=True)
-        self.btn_especificar.pack(side="left", padx=10)
+
+        self.save_btn = criar_botao(top_frame, "Salvar (pasta output)", self.disk_save,
+                                    estado="disabled", amarelo=True)
+        self.save_btn.pack(side="right", padx=10)
 
         # ===== BARRA DE BAIXO =====
         bottom_frame = tk.Frame(self, bg=COR_FUNDO, pady=10)
         bottom_frame.pack(side="bottom", fill="x")
         criar_botao(bottom_frame, "Voltar", app.mostrar_equalizar).pack(side="left", padx=10)
+
+
+        self.btn_especificar = criar_botao(bottom_frame, "Equalização específica", self.especificar,
+                                           estado="disabled", amarelo=True)
+        self.btn_especificar.pack(side="right", padx=10)
+
 
         # ===== GRADE: 3 colunas (original, referência, resultado) =====
         grade = tk.Frame(self, bg=COR_FUNDO)
@@ -56,18 +65,22 @@ class FrameEspecificacao(tk.Frame):
 
     # ---------- ações ----------
     def abrir_original(self):
-        _, img = abrir_imagem_cinza()
+        caminho, img = abrir_imagem_cinza()
         if img is None:
             return
-        self.img_original = img
+        
+        self.original_path = caminho
+        self.original_image = img
         mostrar_imagem(self.lbl_imgs[0], img, TAM_IMAGEM)
         self.limpar_resultado()
 
     def abrir_referencia(self):
-        _, img = abrir_imagem_cinza()
+        caminho_ref, img = abrir_imagem_cinza()
         if img is None:
             return
-        self.img_referencia = img
+        
+        self.referencia_path = caminho_ref
+        self.referencia_image = img
         mostrar_imagem(self.lbl_imgs[1], img, TAM_IMAGEM)
         self.limpar_resultado()
 
@@ -76,22 +89,46 @@ class FrameEspecificacao(tk.Frame):
         for painel in self.pan_hists:
             limpar_figura(painel)
 
-        pronto = self.img_original is not None and self.img_referencia is not None
+        pronto = self.original_image is not None and self.referencia_image is not None
         self.btn_especificar.config(state="normal" if pronto else "disabled")
 
     def especificar(self):
-        hist_original = calcular_histograma(self.img_original)
-        hist_referencia = calcular_histograma(self.img_referencia)
+        self.hist_original = calcular_histograma(self.original_image)
+        self.hist_referencia = calcular_histograma(self.referencia_image)
 
-        resultado = especificar_histograma(self.img_original, hist_original, hist_referencia)
-        hist_resultado = calcular_histograma(resultado)
+        self.equalized_image = especificar_histograma(self.original_image, self.hist_original, self.hist_referencia)
+        self.hist_equalized = calcular_histograma(self.equalized_image)
 
-        mostrar_imagem(self.lbl_imgs[2], resultado, TAM_IMAGEM)
+        mostrar_imagem(self.lbl_imgs[2], self.equalized_image, TAM_IMAGEM)
 
         histogramas = [
-            (hist_original, "Histograma original"),
-            (hist_referencia, "Histograma da referência"),
-            (hist_resultado, "Histograma do resultado"),
+            (self.hist_original, "Histograma original"),
+            (self.hist_referencia, "Histograma da referência"),
+            (self.hist_equalized, "Histograma do resultado"),
         ]
         for painel, (hist, titulo) in zip(self.pan_hists, histogramas):
             mostrar_figura(painel, criar_figura_histograma(hist, titulo, 3.4, 2.5))
+
+
+
+
+        self.save_btn.config(state="normal")
+
+    
+    def disk_save(self):
+        os.makedirs(PASTA_OUTPUT, exist_ok=True)
+        base = os.path.splitext(os.path.basename(self.original_path))[0]
+
+        self.original_image.save(os.path.join(PASTA_OUTPUT, f"{base}_original.png"))
+        self.referencia_image.save(os.path.join(PASTA_OUTPUT, f"{base}_referencia.png"))
+        self.equalized_image.save(os.path.join(PASTA_OUTPUT, f"{base}_equalizada.png"))
+
+
+        criar_figura_histograma(self.hist_original, "Histograma original").savefig(
+            os.path.join(PASTA_OUTPUT, f"{base}_histograma_original.png"))
+        criar_figura_histograma(self.hist_referencia, "Histograma da referência").savefig(
+            os.path.join(PASTA_OUTPUT, f"{base}_histograma_referencia.png"))
+        criar_figura_histograma(self.hist_equalized, "Histograma equalizado").savefig(
+            os.path.join(PASTA_OUTPUT, f"{base}_histograma_equalizado.png"))
+
+        messagebox.showinfo("Salvo", f"4 arquivos salvos em:\n{PASTA_OUTPUT}")
