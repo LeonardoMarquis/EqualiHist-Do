@@ -30,7 +30,7 @@ class FrameEqualizar(tk.Frame):
 
         criar_botao(top_frame, "Abrir imagem", self.local_search).pack(side="left", padx=10)
 
-        self.save_btn = criar_botao(top_frame, "Salvar (pasta output)", self.disk_save,
+        self.save_btn = criar_botao(top_frame, "Salvar", self.disk_save,
                                     estado="disabled", amarelo=True)
         self.save_btn.pack(side="right", padx=10)
 
@@ -82,6 +82,8 @@ class FrameEqualizar(tk.Frame):
         self.panel_hist = tk.Frame(image_frame, bg=COR_FUNDO)
         self.panel_hist.pack(side="left", expand=True, fill="both")
         self.clear_histogram_area()
+
+        messagebox.showinfo("AVISO", "Instruções de Fluxo de uso estão no README em https://github.com/LeonardoMarquis/EqualiHist-Do")
 
     def clear_histogram_area(self):
         limpar_figura(self.panel_hist)

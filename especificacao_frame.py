@@ -24,7 +24,7 @@ class FrameEspecificacao(tk.Frame):
         criar_botao(top_frame, "Abrir imagem de referência", self.abrir_referencia).pack(side="left", padx=10)
 
 
-        self.save_btn = criar_botao(top_frame, "Salvar (pasta output)", self.disk_save,
+        self.save_btn = criar_botao(top_frame, "Salvar", self.disk_save,
                                     estado="disabled", amarelo=True)
         self.save_btn.pack(side="right", padx=10)
 
