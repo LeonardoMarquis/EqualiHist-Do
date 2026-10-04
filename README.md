@@ -9,7 +9,7 @@ Equalização<br>
 Equalização Especifica<br>
 <img src="./assets/Readme_image3.jpg"  width="746" height="504">
 
-<br>
+
 ### Instruções
 #### Fluxo de uso:
 1 Carregue a imagem original (jpg, jpeg, png ou bmp), se ela for colorida será transformada em escala de cinza<br>
