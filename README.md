@@ -3,10 +3,13 @@
 * Ferramenta para vizualizar histogramas e equalizar imagens
 * Trabalha apenas com escala de cinza
 ### Exemplo:
-Equalização
+Equalização<br>
 <img src="./assets/Readme_image2.jpg"  width="746" height="504">
-Equalização Especifica
+<br><br>
+Equalização Especifica<br>
+<img src="./assets/Readme_image3.jpg"  width="746" height="504">
 
+<br>
 ### Instruções
 #### Fluxo de uso:
 1 Carregue a imagem original (jpg, jpeg, png ou bmp), se ela for colorida será transformada em escala de cinza<br>
