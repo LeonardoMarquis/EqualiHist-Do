@@ -50,3 +50,4 @@ if __name__ == "__main__":
     root.iconbitmap("assets/grace_s_icon.ico")  
     app = App(root)
     root.mainloop()
+    

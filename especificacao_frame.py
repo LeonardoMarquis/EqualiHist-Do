@@ -133,3 +133,4 @@ class FrameEspecificacao(tk.Frame):
             os.path.join(PASTA_OUTPUT, f"{base}_histograma_equalizado_eq_es.png"))
 
         messagebox.showinfo("Salvo", f"6 arquivos salvos em:\n{PASTA_OUTPUT}")
+        

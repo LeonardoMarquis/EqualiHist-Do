@@ -153,3 +153,4 @@ class FrameEqualizar(tk.Frame):
             os.path.join(PASTA_OUTPUT, f"{base}_histograma_equalizado.png"))
 
         messagebox.showinfo("Salvo", f"4 arquivos salvos em:\n{PASTA_OUTPUT}")
+        

@@ -40,3 +40,4 @@ class FrameComparar(tk.Frame):
             painel = tk.Frame(coluna, bg=COR_FUNDO)
             painel.pack(expand=True, fill="both")
             mostrar_figura(painel, criar_figura_histograma(hist, titulo_hist, 4.6, 2.8))
+            

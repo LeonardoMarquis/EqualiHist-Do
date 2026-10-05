@@ -104,3 +104,4 @@ def mostrar_figura(parent, fig):
     canvas = FigureCanvasTkAgg(fig, master=parent)
     canvas.draw()
     canvas.get_tk_widget().pack(expand=True, fill="both")
+    
