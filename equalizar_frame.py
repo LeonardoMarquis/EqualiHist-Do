@@ -24,55 +24,52 @@ class FrameEqualizar(tk.Frame):
         self.build_screen()
 
     def build_screen(self):
-        # ===== BARRA DE CIMA =====
+        # BARRA DE CIMA
         top_frame = tk.Frame(self, bg=COR_FUNDO, pady=10)
         top_frame.pack(fill="x")
 
         criar_botao(top_frame, "Abrir imagem", self.local_search).pack(side="left", padx=10)
 
-        self.save_btn = criar_botao(top_frame, "Salvar", self.disk_save,
-                                    estado="disabled", amarelo=True)
+        self.save_btn = criar_botao(top_frame, "Salvar", self.disk_save, estado="disabled", amarelo=True)
         self.save_btn.pack(side="right", padx=10)
 
-        # ===== BARRA DE BAIXO (criada antes para reservar o espaço) =====
+        # BARRA DE BAIXO (criada antes para reservar o espaço) 
         bottom_frame = tk.Frame(self, bg=COR_FUNDO, pady=10)
         bottom_frame.pack(side="bottom", fill="x")
 
         self.next_btn = criar_botao(bottom_frame, "Equalização Específica", self.app.mostrar_especificacao)
         self.next_btn.pack(side="right", padx=10)
 
-        self.compare_btn = criar_botao(bottom_frame, "Comparar", self.comparar,
-                                       estado="disabled", amarelo=True)
+        self.compare_btn = criar_botao(bottom_frame, "Comparar", self.comparar, estado="disabled", amarelo=True)
         self.compare_btn.pack(side="right", padx=10)
 
-        # ===== ÁREA PRINCIPAL =====
+
+
+        # ÁREA PRINCIPAL
         main_frame = tk.Frame(self, bg="#FFFFFF")
         main_frame.pack(expand=True, fill="both")
 
-        # ===== BARRA LATERAL =====
+        # BARRA LATERAL
         sidebar = tk.Frame(main_frame, width=200, bg="#F5F5F5", padx=10, pady=10)
         sidebar.pack(side="left", fill="y")
 
         tk.Label(sidebar, text="Passos", font=("Arial", 13, "bold"),
                  bg="#F5F5F5", fg=COR_DETALHE).pack(pady=10)
 
-        self.hist_btn = criar_botao(sidebar, "Gerar histograma", self.generate_histogram,
-                                    estado="disabled", width=18)
+        self.hist_btn = criar_botao(sidebar, "Gerar histograma", self.generate_histogram, estado="disabled", width=18)
         self.hist_btn.pack(pady=10)
 
-        self.equalize_btn = criar_botao(sidebar, "Equalizar", self.equalize,
-                                        estado="disabled", width=18)
+        self.equalize_btn = criar_botao(sidebar, "Equalizar", self.equalize, estado="disabled", width=18)
         self.equalize_btn.pack(pady=10)
 
-        # ===== IMAGEM + HISTOGRAMA =====
+        # IMAGEM + HISTOGRAMA
         image_frame = tk.Frame(main_frame, bg=COR_FUNDO)
         image_frame.pack(side="right", expand=True, fill="both", padx=10, pady=10)
 
         panel_img = tk.Frame(image_frame, bg=COR_FUNDO)
         panel_img.pack(side="left", expand=True, fill="both")
 
-        self.lbl_titulo = tk.Label(panel_img, text="", bg=COR_FUNDO, fg=COR_DETALHE2,
-                                   font=("Arial", 12, "bold"))
+        self.lbl_titulo = tk.Label(panel_img, text="", bg=COR_FUNDO, fg=COR_DETALHE2, font=("Arial", 12, "bold"))
         self.lbl_titulo.pack(pady=5)
 
         self.lbl_imagem = tk.Label(panel_img, text="Nenhuma imagem carregada",
@@ -89,11 +86,11 @@ class FrameEqualizar(tk.Frame):
         limpar_figura(self.panel_hist)
 
         # gerar espaco, linha cima do histograma para ficar 1 linha abaixo e alinhar com o titulo da imagem original
-        tk.Label(self.panel_hist, text="", bg=COR_FUNDO,
-                font=("Arial", 12, "bold")).pack(pady=5)
+        tk.Label(self.panel_hist, text="", bg=COR_FUNDO, font=("Arial", 12, "bold")).pack(pady=5)
         # texto normal "verdadeiro"
-        tk.Label(self.panel_hist, text="O histograma aparece aqui", bg=COR_FUNDO,
-                fg=COR_DETALHE2, font=("Arial", 14)).pack(expand=True)
+        tk.Label(self.panel_hist, text="O histograma aparece aqui", bg=COR_FUNDO, fg=COR_DETALHE2, font=("Arial", 14)).pack(expand=True)
+
+
 
     # ---------- ações ----------
     def local_search(self):
@@ -119,8 +116,8 @@ class FrameEqualizar(tk.Frame):
 
     def generate_histogram(self):
         self.hist_original = calcular_histograma(self.original_image)
-        mostrar_figura(self.panel_hist,
-                       criar_figura_histograma(self.hist_original, "Histograma original"))
+        mostrar_figura(self.panel_hist, criar_figura_histograma(self.hist_original, "Histograma original"))
+
         self.hist_btn.config(state="disabled")
         self.equalize_btn.config(state="normal")
 
@@ -131,8 +128,8 @@ class FrameEqualizar(tk.Frame):
         # a equalizada ocupa o lugar da original
         self.lbl_titulo.configure(text="Imagem equalizada")
         mostrar_imagem(self.lbl_imagem, self.equalized_image, TAM_IMAGEM)
-        mostrar_figura(self.panel_hist,
-                       criar_figura_histograma(self.hist_equalized, "Histograma equalizado"))
+        
+        mostrar_figura(self.panel_hist, criar_figura_histograma(self.hist_equalized, "Histograma equalizado"))
 
         self.equalize_btn.config(state="disabled")
         self.save_btn.config(state="normal")

@@ -54,12 +54,14 @@ def criar_botao(parent, texto, comando, estado="normal", amarelo=False, width=No
 
 
 def abrir_imagem_cinza():
-    """Abre o seletor de arquivo. Retorna (caminho, imagem PIL em cinza) ou (None, None)."""
+    """Abre o seletor de arquivo. Retorna (caminho, imagem PIL em cinza) ou (None, None)"""
     caminho = filedialog.askopenfilename(
         filetypes=[("Imagens", "*.jpg *.jpeg *.png *.bmp")]
     )
+
     if not caminho:
         return None, None
+    
     try:
         return caminho, Image.open(caminho).convert("L")   # escala de cinza, 0 a 255
     except Exception as e:
